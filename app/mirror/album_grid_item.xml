@@ -1,0 +1,12 @@
+<!-- [ Mirror metadata ] generatedAt: 1417809173696 -->
+<!-- Generated screen file. Fill the id tags below with content with
+which to populate your previewed layout. For a complete specification
+of sample data, please see http://jimulabs.com/sample-data-specifications/ -->
+<screen>
+    <_content layout="@layout/album_grid_item">
+        <!-- ImageView Examples:
+        <album_art src="@drawable/image_resource" />
+        <album_art src="relative_path/image.jpg" /> -->
+        <album_art />
+    </_content>
+</screen>

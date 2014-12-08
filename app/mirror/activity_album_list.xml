@@ -1,0 +1,31 @@
+<!-- [ Mirror metadata ] generatedAt: 1417617755327 --><!-- Generated screen file. Fill the id tags below with content with
+which to populate your previewed layout. For a complete specification
+of sample data, please see http://jimulabs.com/sample-data-specifications/ -->
+<screen>
+    <_content layout="@layout/activity_album_list">
+        <!--<toolbar title="@string/app_name" menu="menu_album_list" />-->
+        <album_list layoutManager="staggeredGrid:2">
+            <!-- Examples of valid layoutManager values: "linear", "staggeredGrid:5:horizontal", "staggeredGrid:4" -->
+            <items layout="@layout/album_grid_item" count="3">
+                <_item>
+                    <album_art src="@drawable/kodaline" />
+                </_item>
+                <_item>
+                    <album_art src="@drawable/christina" />
+                </_item>
+                <_item>
+                    <album_art src="@drawable/foster" />
+                </_item>
+                <_item>
+                    <album_art src="@drawable/keane" />
+                </_item>
+                <_item>
+                    <album_art src="@drawable/pinkrobots" />
+                </_item>
+                <_item>
+                    <album_art src="@drawable/ellie" />
+                </_item>
+            </items>
+        </album_list>
+    </_content>
+</screen>

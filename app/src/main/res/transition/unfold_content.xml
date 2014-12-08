@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
+    android:transitionOrdering="together">
+    <transitionSet android:transitionOrdering="sequential">
+        <transitionSet android:transitionOrdering="together">
+            <transition class="com.jimulabs.lens.Fold">
+                <targets>
+                    <target android:targetId="@id/title_container" />
+                </targets>
+            </transition>
+            <fade>
+                <targets>
+                    <target android:targetId="@id/title" />
+                    <target android:targetId="@id/subtitle" />
+                </targets>
+            </fade>
+        </transitionSet>
+        <transition class="com.jimulabs.lens.Fold">
+            <targets>
+                <target android:targetId="@id/info_container" />
+            </targets>
+        </transition>
+    </transitionSet>
+    <transition
+        class="com.jimulabs.lens.Scale"
+        android:startDelay="500">
+        <targets>
+            <target android:targetId="@id/fab" />
+        </targets>
+    </transition>
+</transitionSet>

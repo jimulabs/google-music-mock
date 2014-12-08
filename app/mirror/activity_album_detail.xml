@@ -1,0 +1,13 @@
+<!-- [ Mirror metadata ] generatedAt: 1417618607619 -->
+<!-- Generated screen file. Fill the id tags below with content with
+which to populate your previewed layout. For a complete specification
+of sample data, please see http://jimulabs.com/sample-data-specifications/ -->
+<screen theme="AppTheme.Dark">
+    <_content layout="@layout/activity_album_detail">
+        <album_art src="@drawable/kodaline" />
+        <title>Kodaline</title>
+        <subtitle>In a Perfect World</subtitle>
+        <name>One Day</name>
+        <time>4:15</time>
+    </_content>
+</screen>
