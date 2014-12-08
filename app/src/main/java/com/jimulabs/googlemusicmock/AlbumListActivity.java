@@ -1,6 +1,7 @@
 package com.jimulabs.googlemusicmock;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -52,7 +53,7 @@ public class AlbumListActivity extends Activity {
     }
 
     private void populate() {
-        StaggeredGridLayoutManager lm = new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
+        StaggeredGridLayoutManager lm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         mAlbumList.setLayoutManager(lm);
         final int[] albumArts = {R.drawable.christina,
                 R.drawable.ellie,
@@ -70,7 +71,10 @@ public class AlbumListActivity extends Activity {
                         int albumArtResId = albumArts[vh.getPosition() % albumArts.length];
                         Intent intent = new Intent(AlbumListActivity.this, AlbumDetailActivity.class);
                         intent.putExtra(AlbumDetailActivity.EXTRA_ALBUM_ART_RESID, albumArtResId);
-                        startActivity(intent);
+
+                        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(AlbumListActivity.this,
+                                vh.albumArt, vh.albumArt.getTransitionName());
+                        startActivity(intent, options.toBundle());
                     }
                 });
             }
