@@ -3,7 +3,7 @@
     android:transitionOrdering="together">
     <transitionSet android:transitionOrdering="sequential">
         <transitionSet android:transitionOrdering="together">
-            <transition class="com.jimulabs.lens.Fold">
+            <transition class="com.jimulabs.googlemusicmock.transition.Fold">
                 <targets>
                     <target android:targetId="@id/title_container" />
                 </targets>
@@ -15,14 +15,14 @@
                 </targets>
             </fade>
         </transitionSet>
-        <transition class="com.jimulabs.lens.Fold">
+        <transition class="com.jimulabs.googlemusicmock.transition.Fold">
             <targets>
                 <target android:targetId="@id/info_container" />
             </targets>
         </transition>
     </transitionSet>
     <transition
-        class="com.jimulabs.lens.Scale"
+        class="com.jimulabs.googlemusicmock.transition.Scale"
         android:startDelay="500">
         <targets>
             <target android:targetId="@id/fab" />

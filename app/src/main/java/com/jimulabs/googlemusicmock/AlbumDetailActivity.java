@@ -2,6 +2,7 @@ package com.jimulabs.googlemusicmock;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.transition.TransitionInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,7 +26,14 @@ public class AlbumDetailActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album_detail);
         ButterKnife.inject(this);
+        initTransitions();
         populate();
+    }
+
+    private void initTransitions() {
+        TransitionInflater inflater = TransitionInflater.from(this);
+        getWindow().setEnterTransition(inflater.inflateTransition(R.transition.album_detail_enter));
+        getWindow().setReturnTransition(inflater.inflateTransition(R.transition.album_detail_return));
     }
 
     private void populate() {

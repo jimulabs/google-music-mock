@@ -25,9 +25,14 @@ public class AlbumListActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album_list);
+        initTransitions();
 
         ButterKnife.inject(this);
         populate();
+    }
+
+    private void initTransitions() {
+        getWindow().setExitTransition(null);
     }
 
     interface OnVHClickedListener {
