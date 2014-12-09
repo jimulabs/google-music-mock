@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.jimulabs.googlemusicmock.transition.RevealTransition;
 
@@ -41,6 +42,10 @@ public class AlbumDetailActivity extends Activity {
     ViewGroup titleContainer;
     @InjectView(R.id.info_container)
     ViewGroup infoContainer;
+    @InjectView(R.id.title)
+    TextView title;
+    @InjectView(R.id.subtitle)
+    TextView subtitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +53,8 @@ public class AlbumDetailActivity extends Activity {
         setContentView(R.layout.activity_album_detail);
         ButterKnife.inject(this);
         initTransitions();
-        setViewsVisibility(false);
-//        toggleTransitViews();
         populate();
+        setViewsVisibility(false);
     }
 
     @OnClick(R.id.album_art)
@@ -92,7 +96,7 @@ public class AlbumDetailActivity extends Activity {
 
             @Override
             public void onTransitionEnd(Transition transition) {
-                playAnimationsAfterEnterTransition();
+                playOtherEnterAnimations();
             }
 
             @Override
@@ -113,19 +117,53 @@ public class AlbumDetailActivity extends Activity {
         window.setEnterTransition(reveal);
     }
 
-    private void playAnimationsAfterEnterTransition() {
-        setViewsVisibility(true);
+    class SetVisibleAnimatorListener implements Animator.AnimatorListener {
+        private final View target;
+
+        SetVisibleAnimatorListener(View target) {
+            this.target = target;
+        }
+        @Override
+        public void onAnimationStart(Animator animation) {
+            target.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        public void onAnimationEnd(Animator animation) {
+        }
+
+        @Override
+        public void onAnimationCancel(Animator animation) {
+        }
+
+        @Override
+        public void onAnimationRepeat(Animator animation) {
+        }
+    };
+
+    private void playOtherEnterAnimations() {
         Animator scaleX = ObjectAnimator.ofFloat(fab, "scaleX", 0, 1);
         Animator scaleY = ObjectAnimator.ofFloat(fab, "scaleY", 0, 1);
         Animator scaleFab = together(scaleX, scaleY);
         scaleFab.setTarget(fab);
+        scaleFab.addListener(new SetVisibleAnimatorListener(fab));
 
         Animator unfoldTitleContainer = createUnfoldAnimator(titleContainer);
         Animator unfoldInfoContainer = createUnfoldAnimator(infoContainer);
 
-        Animator transition = together(sequence(unfoldTitleContainer, unfoldInfoContainer), scaleFab);
+        Animator fadeInTitle = createFadeInAnimator(title);
+        Animator fadeInSubtitle = createFadeInAnimator(subtitle);
+
+        Animator transition = together(sequence(together(unfoldTitleContainer, fadeInTitle, fadeInSubtitle),
+                unfoldInfoContainer), scaleFab);
 
         transition.start();
+    }
+
+    private Animator createFadeInAnimator(View view) {
+        Animator animator = ObjectAnimator.ofFloat(view, "alpha", 0, 1);
+        animator.addListener(new SetVisibleAnimatorListener(view));
+        return animator;
     }
 
     private AnimatorSet sequence(Animator... animators) {
@@ -135,8 +173,10 @@ public class AlbumDetailActivity extends Activity {
     }
 
     private Animator createUnfoldAnimator(ViewGroup view) {
-        return ObjectAnimator.ofInt(view, "bottom", view.getTop(),
+        ObjectAnimator animator = ObjectAnimator.ofInt(view, "bottom", view.getTop(),
                 view.getTop() + view.getHeight());
+        animator.addListener(new SetVisibleAnimatorListener(view));
+        return animator;
     }
 
     private Animator together(Animator... animators) {
