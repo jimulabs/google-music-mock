@@ -15,9 +15,7 @@ import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
-import com.jimulabs.googlemusicmock.transition.Fold;
 import com.jimulabs.googlemusicmock.transition.RevealTransition;
-import com.jimulabs.googlemusicmock.transition.Scale;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -50,15 +48,18 @@ public class AlbumDetailActivity extends Activity {
 
     @OnClick(R.id.album_art)
     public void onAlbumArtClicked() {
-        toggleTransitViews();
+        toggleTransitViews(null);
     }
 
-    private void toggleTransitViews() {
+    private void toggleTransitViews(Transition.TransitionListener listener) {
         final ViewGroup root = (ViewGroup) getWindow().getDecorView();
         TransitionInflater inflater = TransitionInflater.from(this);
         boolean toShow = viewsToAnimate[0].getVisibility() == View.INVISIBLE;
         Transition transition = inflater.inflateTransition(
                 toShow ? R.transition.album_detail_enter : R.transition.album_detail_return);
+        if (listener!=null) {
+            transition.addListener(listener);
+        }
         getContentTransitionManager().beginDelayedTransition(root, transition);
         setViewsVisibility(toShow);
     }
@@ -76,14 +77,66 @@ public class AlbumDetailActivity extends Activity {
         TransitionInflater inflater = TransitionInflater.from(this);
         Window window = getWindow();
         RevealTransition reveal = createRevealTransition();
+        reveal.addListener(new Transition.TransitionListener() {
+            @Override
+            public void onTransitionStart(Transition transition) {
+
+            }
+
+            @Override
+            public void onTransitionEnd(Transition transition) {
+                toggleTransitViews(null);
+            }
+
+            @Override
+            public void onTransitionCancel(Transition transition) {
+
+            }
+
+            @Override
+            public void onTransitionPause(Transition transition) {
+
+            }
+
+            @Override
+            public void onTransitionResume(Transition transition) {
+
+            }
+        });
         window.setEnterTransition(reveal);
+    }
 
-        Transition otherReturnTransition = inflater.inflateTransition(R.transition.album_detail_return);
-        window.setReturnTransition(sequence(otherReturnTransition, reveal.clone()));
+    @Override
+    public void finishAfterTransition() {
+        toggleTransitViews(new Transition.TransitionListener() {
+            @Override
+            public void onTransitionStart(Transition transition) {
+            }
 
-        Transition shareTransitionClone = window.getSharedElementReturnTransition().clone();
-//        shareTransitionClone.setStartDelay(800);
-        window.setSharedElementReturnTransition(shareTransitionClone);
+            @Override
+            public void onTransitionEnd(Transition transition) {
+                superFinishAfterTransition();
+            }
+
+            @Override
+            public void onTransitionCancel(Transition transition) {
+
+            }
+
+            @Override
+            public void onTransitionPause(Transition transition) {
+
+            }
+
+            @Override
+            public void onTransitionResume(Transition transition) {
+
+            }
+        });
+    }
+
+    private void superFinishAfterTransition() {
+        super.finishAfterTransition();
     }
 
     private TransitionSet sequence(Transition... transitions) {
