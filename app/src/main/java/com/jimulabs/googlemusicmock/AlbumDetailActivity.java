@@ -1,5 +1,8 @@
 package com.jimulabs.googlemusicmock;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -34,6 +37,10 @@ public class AlbumDetailActivity extends Activity {
     View[] viewsToAnimate;
     @InjectView(R.id.fab)
     ImageButton fab;
+    @InjectView(R.id.title_container)
+    ViewGroup titleContainer;
+    @InjectView(R.id.info_container)
+    ViewGroup infoContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +92,7 @@ public class AlbumDetailActivity extends Activity {
 
             @Override
             public void onTransitionEnd(Transition transition) {
-                toggleTransitViews(null);
+                playAnimationsAfterEnterTransition();
             }
 
             @Override
@@ -104,6 +111,38 @@ public class AlbumDetailActivity extends Activity {
             }
         });
         window.setEnterTransition(reveal);
+    }
+
+    private void playAnimationsAfterEnterTransition() {
+        setViewsVisibility(true);
+        Animator scaleX = ObjectAnimator.ofFloat(fab, "scaleX", 0, 1);
+        Animator scaleY = ObjectAnimator.ofFloat(fab, "scaleY", 0, 1);
+        Animator scaleFab = together(scaleX, scaleY);
+        scaleFab.setTarget(fab);
+
+        Animator unfoldTitleContainer = createUnfoldAnimator(titleContainer);
+        Animator unfoldInfoContainer = createUnfoldAnimator(infoContainer);
+
+        Animator transition = together(sequence(unfoldTitleContainer, unfoldInfoContainer), scaleFab);
+
+        transition.start();
+    }
+
+    private AnimatorSet sequence(Animator... animators) {
+        AnimatorSet set = new AnimatorSet();
+        set.playSequentially(animators);
+        return set;
+    }
+
+    private Animator createUnfoldAnimator(ViewGroup view) {
+        return ObjectAnimator.ofInt(view, "bottom", view.getTop(),
+                view.getTop() + view.getHeight());
+    }
+
+    private Animator together(Animator... animators) {
+        AnimatorSet set = new AnimatorSet();
+        set.playTogether(animators);
+        return set;
     }
 
     @Override
