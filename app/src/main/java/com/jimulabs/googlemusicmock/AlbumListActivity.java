@@ -3,6 +3,7 @@ package com.jimulabs.googlemusicmock;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -76,6 +77,12 @@ public class AlbumListActivity extends Activity {
                         int albumArtResId = albumArts[vh.getPosition() % albumArts.length];
                         Intent intent = new Intent(AlbumListActivity.this, AlbumDetailActivity.class);
                         intent.putExtra(AlbumDetailActivity.EXTRA_ALBUM_ART_RESID, albumArtResId);
+
+                        int[] location = new int[2];
+                        vh.albumArt.getLocationInWindow(location);
+                        Point epicenter = new Point(location[0] + vh.albumArt.getMeasuredWidth() / 2,
+                                location[1] + vh.albumArt.getMeasuredHeight() / 2);
+                        intent.putExtra(AlbumDetailActivity.EXTRA_EPICENTER, epicenter);
 
                         ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(AlbumListActivity.this,
                                 vh.albumArt, vh.albumArt.getTransitionName());

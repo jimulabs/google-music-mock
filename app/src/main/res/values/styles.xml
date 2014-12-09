@@ -2,16 +2,17 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:colorPrimary">#ffba7400</item>
+        <item name="android:colorPrimary">@color/yellow</item>
         <item name="android:colorPrimaryDark">#ff070707</item>
         <item name="android:colorAccent">#ff0000</item>
         <item name="android:windowContentTransitions">true</item>
     </style>
 
     <style name="AppTheme.Dark" parent="android:Theme.Material.NoActionBar">
-        <item name="android:colorPrimary">#ffba7400</item>
+        <item name="android:colorPrimary">@color/yellow</item>
         <item name="android:colorPrimaryDark">#ff875200</item>
         <item name="android:colorAccent">#ff0000</item>
         <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowBackground">@color/yellow</item>
     </style>
 </resources>

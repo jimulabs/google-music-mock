@@ -1,14 +1,19 @@
 package com.jimulabs.googlemusicmock;
 
 import android.app.Activity;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
+import android.transition.TransitionSet;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
+
+import com.jimulabs.googlemusicmock.transition.RevealTransition;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -17,6 +22,7 @@ import butterknife.InjectView;
 public class AlbumDetailActivity extends Activity {
 
     public static final String EXTRA_ALBUM_ART_RESID = "EXTRA_ALBUM_ART_RESID";
+    public static final String EXTRA_EPICENTER = "EXTRA_EPICENTER";
 
     @InjectView(R.id.album_art)
     ImageView albumArtView;
@@ -35,11 +41,33 @@ public class AlbumDetailActivity extends Activity {
     private void initTransitions() {
         TransitionInflater inflater = TransitionInflater.from(this);
         Window window = getWindow();
-        window.setEnterTransition(inflater.inflateTransition(R.transition.album_detail_enter));
+        RevealTransition reveal = createRevealTransition();
+        Transition otherEnterTransition = inflater.inflateTransition(R.transition.album_detail_enter);
+        window.setEnterTransition(sequence(reveal, otherEnterTransition));
+
+        Transition otherReturnTransition = inflater.inflateTransition(R.transition.album_detail_return);
+        window.setReturnTransition(sequence(otherReturnTransition, reveal.clone()));
+
         Transition shareTransitionClone = window.getSharedElementReturnTransition().clone();
         shareTransitionClone.setStartDelay(800);
         window.setSharedElementReturnTransition(shareTransitionClone);
-        window.setReturnTransition(inflater.inflateTransition(R.transition.album_detail_return));
+    }
+
+    private TransitionSet sequence(Transition... transitions) {
+        TransitionSet enterTransition = new TransitionSet();
+        enterTransition.setOrdering(TransitionSet.ORDERING_SEQUENTIAL);
+        for (Transition t:transitions) {
+            enterTransition.addTransition(t);
+        }
+        return enterTransition;
+    }
+
+    private RevealTransition createRevealTransition() {
+        Point epicenter = getIntent().getParcelableExtra(EXTRA_EPICENTER);
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        int bigRadius = Math.max(displayMetrics.widthPixels, displayMetrics.heightPixels);
+        RevealTransition reveal = new RevealTransition(epicenter, 0, bigRadius, 500);
+        return reveal;
     }
 
     private void populate() {
