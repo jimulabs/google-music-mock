@@ -2,10 +2,12 @@ package com.jimulabs.googlemusicmock;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 
 import butterknife.ButterKnife;
@@ -32,8 +34,12 @@ public class AlbumDetailActivity extends Activity {
 
     private void initTransitions() {
         TransitionInflater inflater = TransitionInflater.from(this);
-        getWindow().setEnterTransition(inflater.inflateTransition(R.transition.album_detail_enter));
-        getWindow().setReturnTransition(inflater.inflateTransition(R.transition.album_detail_return));
+        Window window = getWindow();
+        window.setEnterTransition(inflater.inflateTransition(R.transition.album_detail_enter));
+        Transition shareTransitionClone = window.getSharedElementReturnTransition().clone();
+        shareTransitionClone.setStartDelay(800);
+        window.setSharedElementReturnTransition(shareTransitionClone);
+        window.setReturnTransition(inflater.inflateTransition(R.transition.album_detail_return));
     }
 
     private void populate() {
