@@ -13,6 +13,6 @@
         <item name="android:colorPrimaryDark">#ff875200</item>
         <item name="android:colorAccent">#ff0000</item>
         <item name="android:windowContentTransitions">true</item>
-        <item name="android:windowBackground">@color/yellow</item>
+        <!--<item name="android:windowBackground">@color/yellow</item>-->
     </style>
 </resources>

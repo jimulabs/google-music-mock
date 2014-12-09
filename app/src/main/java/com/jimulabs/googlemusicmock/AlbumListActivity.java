@@ -34,6 +34,7 @@ public class AlbumListActivity extends Activity {
 
     private void initTransitions() {
         getWindow().setExitTransition(null);
+        getWindow().setReenterTransition(null);
     }
 
     interface OnVHClickedListener {

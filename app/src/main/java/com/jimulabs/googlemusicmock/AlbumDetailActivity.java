@@ -49,7 +49,7 @@ public class AlbumDetailActivity extends Activity {
         window.setReturnTransition(sequence(otherReturnTransition, reveal.clone()));
 
         Transition shareTransitionClone = window.getSharedElementReturnTransition().clone();
-        shareTransitionClone.setStartDelay(800);
+//        shareTransitionClone.setStartDelay(800);
         window.setSharedElementReturnTransition(shareTransitionClone);
     }
 
