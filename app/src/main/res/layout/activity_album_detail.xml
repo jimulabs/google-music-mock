@@ -20,7 +20,6 @@
             android:background="#31576b"
             android:layout_below="@id/album_art"
             android:layout_alignParentLeft="true"
-            android:visibility="invisible"
             android:id="@+id/title_container"
             android:paddingLeft="40dp"
             android:paddingRight="20dp"
@@ -32,7 +31,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="invisible"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Large Text"
                 android:id="@+id/title" />
@@ -41,7 +39,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/title"
-                android:visibility="invisible"
                 android:layout_alignLeft="@id/title"
                 android:textAppearance="?android:attr/textAppearance"
                 android:text="New Text"
@@ -53,7 +50,6 @@
             android:layout_height="wrap_content"
             android:background="@drawable/green_circle"
             android:src="@drawable/ic_pause"
-            android:visibility="invisible"
             android:id="@+id/fab"
             android:layout_above="@+id/title_container"
             android:layout_alignParentRight="true"
@@ -63,7 +59,6 @@
 
         <LinearLayout
             android:id="@+id/info_container"
-            android:visibility="invisible"
             android:layout_below="@id/title_container"
             android:background="#eeeeee"
             android:padding="10dp"

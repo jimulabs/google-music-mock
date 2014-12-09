@@ -21,6 +21,10 @@ public class Scale extends Visibility {
         super(context, attrs);
     }
 
+    public Scale() {
+        super();
+    }
+
     @Override
     public Animator onAppear(ViewGroup sceneRoot, View view, TransitionValues startValues, TransitionValues endValues) {
         return createScaleAnimator(view, 0, 1);

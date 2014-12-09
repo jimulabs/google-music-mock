@@ -12,12 +12,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.jimulabs.googlemusicmock.transition.Fold;
 import com.jimulabs.googlemusicmock.transition.RevealTransition;
+import com.jimulabs.googlemusicmock.transition.Scale;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.InjectViews;
+import butterknife.OnClick;
 
 
 public class AlbumDetailActivity extends Activity {
@@ -27,8 +32,10 @@ public class AlbumDetailActivity extends Activity {
 
     @InjectView(R.id.album_art)
     ImageView albumArtView;
-    @InjectView(R.id.title_container)
-    View titleContainer;
+    @InjectViews({R.id.fab, R.id.title_container, R.id.title, R.id.subtitle, R.id.info_container})
+    View[] viewsToAnimate;
+    @InjectView(R.id.fab)
+    ImageButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,42 +43,39 @@ public class AlbumDetailActivity extends Activity {
         setContentView(R.layout.activity_album_detail);
         ButterKnife.inject(this);
         initTransitions();
+        setViewsVisibility(false);
+//        toggleTransitViews();
         populate();
+    }
+
+    @OnClick(R.id.album_art)
+    public void onAlbumArtClicked() {
+        toggleTransitViews();
+    }
+
+    private void toggleTransitViews() {
+        final ViewGroup root = (ViewGroup) getWindow().getDecorView();
+        TransitionInflater inflater = TransitionInflater.from(this);
+        boolean toShow = viewsToAnimate[0].getVisibility() == View.INVISIBLE;
+        Transition transition = inflater.inflateTransition(
+                toShow ? R.transition.album_detail_enter : R.transition.album_detail_return);
+        getContentTransitionManager().beginDelayedTransition(root, transition);
+        setViewsVisibility(toShow);
+    }
+
+    private void setViewsVisibility(boolean toShow) {
+        for (View v : viewsToAnimate) {
+            v.setVisibility(toShow ? View.VISIBLE : View.INVISIBLE);
+        }
+        float scale = toShow ? 1 : 0;
+        fab.setScaleX(scale);
+        fab.setScaleY(scale);
     }
 
     private void initTransitions() {
         TransitionInflater inflater = TransitionInflater.from(this);
         Window window = getWindow();
         RevealTransition reveal = createRevealTransition();
-        final Transition otherEnterTransition = inflater.inflateTransition(R.transition.album_detail_enter);
-        reveal.addListener(new Transition.TransitionListener() {
-            @Override
-            public void onTransitionStart(Transition transition) {
-                ViewGroup root = (ViewGroup) getWindow().getDecorView();
-                getContentTransitionManager().beginDelayedTransition(root, otherEnterTransition);
-                titleContainer.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onTransitionEnd(Transition transition) {
-
-            }
-
-            @Override
-            public void onTransitionCancel(Transition transition) {
-
-            }
-
-            @Override
-            public void onTransitionPause(Transition transition) {
-
-            }
-
-            @Override
-            public void onTransitionResume(Transition transition) {
-
-            }
-        });
         window.setEnterTransition(reveal);
 
         Transition otherReturnTransition = inflater.inflateTransition(R.transition.album_detail_return);
@@ -85,7 +89,7 @@ public class AlbumDetailActivity extends Activity {
     private TransitionSet sequence(Transition... transitions) {
         TransitionSet enterTransition = new TransitionSet();
         enterTransition.setOrdering(TransitionSet.ORDERING_SEQUENTIAL);
-        for (Transition t:transitions) {
+        for (Transition t : transitions) {
             enterTransition.addTransition(t);
         }
         return enterTransition;
