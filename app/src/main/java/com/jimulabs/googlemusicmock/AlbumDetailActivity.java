@@ -10,6 +10,7 @@ import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 
@@ -42,8 +43,36 @@ public class AlbumDetailActivity extends Activity {
         TransitionInflater inflater = TransitionInflater.from(this);
         Window window = getWindow();
         RevealTransition reveal = createRevealTransition();
-        Transition otherEnterTransition = inflater.inflateTransition(R.transition.album_detail_enter);
-        window.setEnterTransition(sequence(reveal, otherEnterTransition));
+        final Transition otherEnterTransition = inflater.inflateTransition(R.transition.album_detail_enter);
+        reveal.addListener(new Transition.TransitionListener() {
+            @Override
+            public void onTransitionStart(Transition transition) {
+                ViewGroup root = (ViewGroup) getWindow().getDecorView();
+                getContentTransitionManager().beginDelayedTransition(root, otherEnterTransition);
+                titleContainer.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onTransitionEnd(Transition transition) {
+
+            }
+
+            @Override
+            public void onTransitionCancel(Transition transition) {
+
+            }
+
+            @Override
+            public void onTransitionPause(Transition transition) {
+
+            }
+
+            @Override
+            public void onTransitionResume(Transition transition) {
+
+            }
+        });
+        window.setEnterTransition(reveal);
 
         Transition otherReturnTransition = inflater.inflateTransition(R.transition.album_detail_return);
         window.setReturnTransition(sequence(otherReturnTransition, reveal.clone()));
