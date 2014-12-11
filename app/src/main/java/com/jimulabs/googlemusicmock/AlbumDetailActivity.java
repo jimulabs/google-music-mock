@@ -232,6 +232,8 @@ public class AlbumDetailActivity extends Activity {
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         int bigRadius = Math.max(displayMetrics.widthPixels, displayMetrics.heightPixels);
         RevealTransition reveal = new RevealTransition(epicenter, 0, bigRadius, 500);
+        reveal.addTarget(R.id.detail_container);
+        reveal.addTarget(android.R.id.statusBarBackground);
         return reveal;
     }
 
